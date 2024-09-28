@@ -7,5 +7,4 @@ export const practices = [
   { name: 'Sleep', type: 'checkbox' },
   { name: 'Water', type: 'checkbox' },
   { name: 'Read', type: 'checkbox' },
-  { name: 'Journal', type: 'checkbox' },
 ];

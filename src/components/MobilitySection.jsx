@@ -10,7 +10,7 @@ function MobilitySection({ date }) {
     // Sunday
     return (
       <div className="mobility">
-        <span>Rest Day</span>
+        <span>Go Outside!</span>
         <span>&nbsp;</span>
       </div>
     );
@@ -30,13 +30,15 @@ function MobilitySection({ date }) {
             <a href={livingRoomWorkout.url} target="_blank" rel="noopener noreferrer">
               {livingRoomWorkout.name}
             </a>
+            <br/>
             <a href={mobilityPractice.url} target="_blank" rel="noopener noreferrer">
               {mobilityPractice.name}
             </a>
           </>
         ) : (
           <>
-            <span>No Living Room Workout</span>
+            <span>No Workout</span>
+            <br/>
             <a href={mobilityPractice.url} target="_blank" rel="noopener noreferrer">
               {mobilityPractice.name}
             </a>

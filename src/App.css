@@ -267,6 +267,10 @@ h1 {
   display: none;
 }
 
+/* src/App.css */
+
+/* src/App.css */
+
 /* Chart Container Styles */
 .chart-container {
   background-color: #fff;
@@ -286,3 +290,4 @@ h1 {
 .chart-container canvas {
   max-width: 100%;
 }
+

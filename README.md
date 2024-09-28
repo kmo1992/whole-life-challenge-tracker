@@ -1,7 +1,7 @@
 
-# Whole Life Challenge Tracker
+# Healthy Habtis Tracker
 
-A React application to track your progress during the Whole Life Challenge. The app allows you to log daily practices, track nutrition points, and visualize your progress through weekly and entire challenge graphs.
+A React application to track your progress developing healthy habits. The app allows you to log daily practices, track nutrition points, and visualize your progress through weekly and entire challenge graphs.
 
 ## Features
 
@@ -118,9 +118,9 @@ This project is licensed under the MIT License.
 
 ## Contact
 
-- **Author**: Your Name
-- **Email**: your.email@example.com
-- **GitHub**: [yourusername](https://github.com/yourusername)
+- **Author**: Kevin Olvier
+- **Email**: kmo1992@gmail.com
+- **GitHub**: [kmo1992](https://github.com/kmo1992/whole-life-challenge-tracker)
 
 ---
 

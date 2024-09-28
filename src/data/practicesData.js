@@ -8,11 +8,11 @@ export const mobilityPractices = [
   ];
   
   export const livingRoomWorkouts = [
-    { name: 'Living Room Workout 1', url: 'https://play.wholelifechallenge.com/curriculums/4?lesson=22' },
-    { name: 'Living Room Workout 2', url: 'https://play.wholelifechallenge.com/curriculums/4?lesson=23' },
-    { name: 'Living Room Workout 3', url: 'https://play.wholelifechallenge.com/curriculums/4?lesson=24' },
-    { name: 'Living Room Workout 4', url: 'https://play.wholelifechallenge.com/curriculums/4?lesson=25' },
-    { name: 'Living Room Workout 5', url: 'https://play.wholelifechallenge.com/curriculums/4?lesson=26' },
-    { name: 'Living Room Workout 6', url: 'https://play.wholelifechallenge.com/curriculums/4?lesson=27' },
+    { name: 'Workout 1', url: 'https://play.wholelifechallenge.com/curriculums/4?lesson=22' },
+    { name: 'Workout 2', url: 'https://play.wholelifechallenge.com/curriculums/4?lesson=23' },
+    { name: 'Workout 3', url: 'https://play.wholelifechallenge.com/curriculums/4?lesson=24' },
+    { name: 'Workout 4', url: 'https://play.wholelifechallenge.com/curriculums/4?lesson=25' },
+    { name: 'Workout 5', url: 'https://play.wholelifechallenge.com/curriculums/4?lesson=26' },
+    { name: 'Workout 6', url: 'https://play.wholelifechallenge.com/curriculums/4?lesson=27' },
   ];
   

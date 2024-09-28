@@ -19,7 +19,6 @@ function IconKey() {
     { name: 'Sleep', icon: <FaBed style={{ color: '#333' }} /> },
     { name: 'Water', icon: <FaTint style={{ color: '#333' }} /> },
     { name: 'Read', icon: <FaBookOpen style={{ color: '#333' }} /> },
-    { name: 'Journal', icon: <FaPen style={{ color: '#333' }} /> },
   ];
 
   return (

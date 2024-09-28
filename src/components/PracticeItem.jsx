@@ -19,7 +19,6 @@ const iconMap = {
   Sleep: <FaBed style={{ color: '#333' }} />,
   Water: <FaTint style={{ color: '#333' }} />,
   Read: <FaBookOpen style={{ color: '#333' }} />,
-  Journal: <FaPen style={{ color: '#333' }} />,
 };
 
 function PracticeItem({ practice, dayData, handleUpdate }) {

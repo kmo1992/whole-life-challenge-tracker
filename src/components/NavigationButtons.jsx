@@ -1,3 +1,5 @@
+// src/components/NavigationButtons.jsx
+
 import React from 'react';
 import moment from 'moment';
 import { getChallengeStartDate, getChallengeEndDate } from '../utils/dateUtils';
@@ -22,7 +24,7 @@ function NavigationButtons({ currentWeekStart, setCurrentWeekStart }) {
       <button onClick={prevWeek} disabled={isPrevDisabled}>
         Previous Week
       </button>
-      <span>
+      <span style={{ whiteSpace: 'nowrap', flexGrow: 1, textAlign: 'center' }}>
         {currentWeekStart.format('MMM D')} -{' '}
         {currentWeekStart.clone().endOf('isoWeek').format('MMM D')}
       </span>
