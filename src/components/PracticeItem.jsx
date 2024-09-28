@@ -4,21 +4,22 @@ import React from 'react';
 import {
   FaAppleAlt,
   FaDumbbell,
-  FaWalking,
   FaBed,
   FaTint,
-  FaHeart,
-  FaBook,
+  FaBookOpen,
+  FaPen,
 } from 'react-icons/fa';
+import { GrYoga } from "react-icons/gr";
 
+// Updated icon map with new practices and icons
 const iconMap = {
   Nutrition: <FaAppleAlt style={{ color: '#333' }} />,
   Exercise: <FaDumbbell style={{ color: '#333' }} />,
-  Mobility: <FaWalking style={{ color: '#333' }} />,
+  Stretch: <GrYoga style={{ color: '#333' }} />,
   Sleep: <FaBed style={{ color: '#333' }} />,
   Water: <FaTint style={{ color: '#333' }} />,
-  'Well-being': <FaHeart style={{ color: '#333' }} />,
-  Reflection: <FaBook style={{ color: '#333' }} />,
+  Read: <FaBookOpen style={{ color: '#333' }} />,
+  Journal: <FaPen style={{ color: '#333' }} />,
 };
 
 function PracticeItem({ practice, dayData, handleUpdate }) {
