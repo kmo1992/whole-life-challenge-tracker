@@ -8,6 +8,7 @@ import {
   getConsistencyWeeks,
   getPullupHistory,
 } from '../utils/statsUtils';
+import { getSlipCounts } from '../utils/cleanEating';
 
 const HeatCell = ({ day }) => {
   if (day.isFuture) return <span className="heat-cell heat-cell--future" />;
@@ -53,6 +54,7 @@ function TrendsView({ data, onBack }) {
       last30: getCompletionStats(data, today, 30),
       weeks: getConsistencyWeeks(data, today, 12),
       pullups: getPullupHistory(data, today, 14),
+      slips: getSlipCounts(data, today, 30),
     };
   }, [data]);
 
@@ -102,6 +104,26 @@ function TrendsView({ data, onBack }) {
       <section className="trends-section">
         <h3 className="trends-section-title">Pull-up progression</h3>
         <PullupChart sessions={stats.pullups} />
+      </section>
+
+      <section className="trends-section">
+        <h3 className="trends-section-title">Slips · last 30 days</h3>
+        {stats.slips.length === 0 ? (
+          <p className="trends-empty">Clean — no slips logged.</p>
+        ) : (
+          <div className="slip-counts">
+            {stats.slips.map((s) => (
+              <div className="slip-count-row" key={s.key}>
+                <span className="slip-count-label">{s.label}</span>
+                <span
+                  className="slip-count-bar"
+                  style={{ width: `${(s.count / stats.slips[0].count) * 60}%` }}
+                />
+                <span className="slip-count-value">{s.count}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

@@ -12,6 +12,7 @@ import TomorrowPreview from './TomorrowPreview';
 import { getAppToday, isFutureDate } from '../utils/dateUtils';
 import { getWorkoutForDay, getWeekStartKey, getMobilityIndex, getDailyTargets, resolveWeekGoals } from '../utils/scheduleUtils';
 import { calculateStreak } from '../utils/streakUtils';
+import { calculateCleanStreak, getWeekFreeDay, getWeekCleanSummary } from '../utils/cleanEating';
 import { mobilityPractices } from '../data/practicesData';
 
 function DayView({ data, weekGoals, onUpdateDay, onOpenSettings }) {
@@ -32,6 +33,8 @@ function DayView({ data, weekGoals, onUpdateDay, onOpenSettings }) {
   const currentWeekGoals = resolveWeekGoals(weekGoals, weekStartKey);
 
   const streak = useMemo(() => calculateStreak(data, currentDate), [data, currentDate]);
+  const cleanStreak = useMemo(() => calculateCleanStreak(data, currentDate), [data, currentDate]);
+  const weekFreeDayUsedOn = useMemo(() => getWeekFreeDay(data, currentDate), [data, currentDate]);
 
   // Resolve stretch link
   const stretchLink = useMemo(() => {
@@ -86,6 +89,16 @@ function DayView({ data, weekGoals, onUpdateDay, onOpenSettings }) {
     });
   };
 
+  const handleSetSlips = (slips) => {
+    if (isFuture) return;
+    onUpdateDay(dateStr, { slips });
+  };
+
+  const handleSetFreeDay = (freeDay) => {
+    if (isFuture) return;
+    onUpdateDay(dateStr, { freeDay });
+  };
+
   // Today's pull-up target: the accepted number if set, else the schedule's
   const pullupsTarget = (() => {
     const accepted = dayData.acceptedTargets;
@@ -106,7 +119,7 @@ function DayView({ data, weekGoals, onUpdateDay, onOpenSettings }) {
   return (
     <div>
       <DayNavigation currentDate={currentDate} onNavigate={handleNavigate} isToday={isToday} />
-      <StreakDisplay streak={streak} />
+      <StreakDisplay streak={streak} cleanStreak={cleanStreak} />
       <MorningTargets
         isoWeekday={isoWeekday}
         weekGoals={currentWeekGoals}
@@ -151,13 +164,19 @@ function DayView({ data, weekGoals, onUpdateDay, onOpenSettings }) {
             onOpenSettings={onOpenSettings}
             hasTargetsSet={hasTargetsSet}
             targets={nextWeekGoals}
+            cleanSummary={getWeekCleanSummary(data, currentDate)}
           />
         );
       })()}
 
       <EndOfDay
         habits={habits}
+        dayData={dayData}
+        weekFreeDayUsedOn={weekFreeDayUsedOn}
+        isToday={isToday}
         onSetHydration={handleSetHydration}
+        onSetSlips={handleSetSlips}
+        onSetFreeDay={handleSetFreeDay}
         disabled={isReadOnly}
       />
 
