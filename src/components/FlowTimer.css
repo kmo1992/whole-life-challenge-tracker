@@ -309,9 +309,19 @@
   object-fit: cover;
 }
 
-/* Mirror like a real mirror: your right arm shows on the right */
+/* Live preview only, mirrored like a real mirror: your right arm shows on
+   the right. Never applied to playback — flipping a <video> also flips its
+   native controls. */
 .video-mirror {
   transform: scaleX(-1);
+}
+
+/* Get-ready countdown after pressing play */
+.countdown-number {
+  font-size: 24vmin;
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .pip-status {
