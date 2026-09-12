@@ -1,5 +1,6 @@
+import moment from 'moment';
 
-function SundayReflection({ onOpenSettings, hasTargetsSet, targets }) {
+function SundayReflection({ onOpenSettings, hasTargetsSet, targets, cleanSummary }) {
   const parts = [];
   if (targets) {
     if (targets.regularBurpeesGoalTotal > 0) parts.push(`${targets.regularBurpeesGoalTotal} burpees`);
@@ -10,6 +11,14 @@ function SundayReflection({ onOpenSettings, hasTargetsSet, targets }) {
   return (
     <section className="sunday-reflection">
       <h2 className="sunday-reflection-title">Weekly Intentions</h2>
+      {cleanSummary && (
+        <p className="sunday-reflection-summary">
+          This week: {cleanSummary.cleanDays}/7 clean
+          {cleanSummary.freeDayUsedOn
+            ? ` · free day ${moment(cleanSummary.freeDayUsedOn).format('ddd')}`
+            : ''}
+        </p>
+      )}
       {parts.length > 0 && (
         <p className="sunday-reflection-summary">
           Next week: {parts.join(' · ')}

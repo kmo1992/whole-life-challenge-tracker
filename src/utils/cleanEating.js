@@ -65,6 +65,21 @@ export const getWeekFreeDay = (data, date) => {
 };
 
 /**
+ * Week-at-a-glance for the Sunday reflection: how many of the ISO week's
+ * seven days were clean (unrecorded days count as clean — tracking is by
+ * exception), and which day used the free day, if any.
+ */
+export const getWeekCleanSummary = (data, date) => {
+  const d = moment(getWeekStartKey(date));
+  let cleanDays = 0;
+  for (let i = 0; i < 7; i++) {
+    if (isDayClean(data[d.format('YYYY-MM-DD')])) cleanDays += 1;
+    d.add(1, 'days');
+  }
+  return { cleanDays, freeDayUsedOn: getWeekFreeDay(data, date) };
+};
+
+/**
  * Slip tallies per food over the trailing window (free-day slips included —
  * forgiveness is for the streak, not the data). Sorted worst-first,
  * zero-count foods omitted.

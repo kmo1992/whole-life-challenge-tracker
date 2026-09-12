@@ -3,13 +3,14 @@ import { CheckIcon } from './icons';
 import { SLIP_FOODS, slipLabel } from '../utils/cleanEating';
 
 // Clean eating by exception: the day starts clean and costs zero taps.
-// Slips are logged against the six trigger foods; one free day per week
+// Slips are logged against the trigger foods; one free day per week
 // forgives a day's slips (streak-wise — the slips still count in Trends).
-function CleanEatingRow({ slips, freeDay, weekFreeDayUsedOn, disabled, onSetSlips, onSetFreeDay }) {
+// A free day can only be declared on the day itself: planned exceptions,
+// never retroactive pardons. Slips stay editable on any past day.
+function CleanEatingRow({ slips, freeDay, weekFreeDayUsedOn, isToday, disabled, onSetSlips, onSetFreeDay }) {
   const [open, setOpen] = useState(false);
 
   const clean = freeDay || slips.length === 0;
-  const freeDayAvailable = freeDay || !weekFreeDayUsedOn;
 
   const label = freeDay
     ? `Free day${slips.length > 0 ? ` — ${slips.map(slipLabel).join(', ')}` : ''}`
@@ -64,17 +65,25 @@ function CleanEatingRow({ slips, freeDay, weekFreeDayUsedOn, disabled, onSetSlip
               </button>
             ))}
           </div>
-          {freeDayAvailable ? (
+          {freeDay ? (
             <button
-              className={`free-day-btn${freeDay ? ' free-day-btn--on' : ''}`}
+              className="free-day-btn free-day-btn--on"
               type="button"
-              onClick={() => onSetFreeDay(!freeDay)}
+              onClick={() => onSetFreeDay(false)}
             >
-              {freeDay ? '★ Free day' : 'Use my free day'}
+              ★ Free day
             </button>
-          ) : (
+          ) : isToday && !weekFreeDayUsedOn ? (
+            <button
+              className="free-day-btn"
+              type="button"
+              onClick={() => onSetFreeDay(true)}
+            >
+              Use my free day
+            </button>
+          ) : isToday ? (
             <p className="free-day-note">Free day already used this week</p>
-          )}
+          ) : null}
         </div>
       )}
     </>

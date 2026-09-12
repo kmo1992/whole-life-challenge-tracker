@@ -12,7 +12,7 @@ import TomorrowPreview from './TomorrowPreview';
 import { getAppToday, isFutureDate } from '../utils/dateUtils';
 import { getWorkoutForDay, getWeekStartKey, getMobilityIndex, getDailyTargets, resolveWeekGoals } from '../utils/scheduleUtils';
 import { calculateStreak } from '../utils/streakUtils';
-import { calculateCleanStreak, getWeekFreeDay } from '../utils/cleanEating';
+import { calculateCleanStreak, getWeekFreeDay, getWeekCleanSummary } from '../utils/cleanEating';
 import { mobilityPractices } from '../data/practicesData';
 
 function DayView({ data, weekGoals, onUpdateDay, onOpenSettings }) {
@@ -164,6 +164,7 @@ function DayView({ data, weekGoals, onUpdateDay, onOpenSettings }) {
             onOpenSettings={onOpenSettings}
             hasTargetsSet={hasTargetsSet}
             targets={nextWeekGoals}
+            cleanSummary={getWeekCleanSummary(data, currentDate)}
           />
         );
       })()}
@@ -172,6 +173,7 @@ function DayView({ data, weekGoals, onUpdateDay, onOpenSettings }) {
         habits={habits}
         dayData={dayData}
         weekFreeDayUsedOn={weekFreeDayUsedOn}
+        isToday={isToday}
         onSetHydration={handleSetHydration}
         onSetSlips={handleSetSlips}
         onSetFreeDay={handleSetFreeDay}

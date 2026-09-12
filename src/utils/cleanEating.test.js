@@ -6,6 +6,7 @@ import {
   isDayClean,
   calculateCleanStreak,
   getWeekFreeDay,
+  getWeekCleanSummary,
   getSlipCounts,
 } from './cleanEating';
 
@@ -99,6 +100,36 @@ describe('getWeekFreeDay', () => {
 
   it('returns null when the week is unused', () => {
     expect(getWeekFreeDay({}, moment('2024-03-13'))).toBeNull();
+  });
+});
+
+describe('getWeekCleanSummary', () => {
+  // Week of Wed 2024-03-13 runs Mon 03-11 .. Sun 03-17
+  const wed = () => moment('2024-03-13');
+
+  it('counts an untracked week as fully clean (tracking is by exception)', () => {
+    expect(getWeekCleanSummary({}, wed())).toEqual({ cleanDays: 7, freeDayUsedOn: null });
+  });
+
+  it('subtracts days with unforgiven slips', () => {
+    const data = {
+      '2024-03-12': { slips: ['soda'] },
+      '2024-03-14': { slips: ['fried'] },
+    };
+    expect(getWeekCleanSummary(data, wed())).toEqual({ cleanDays: 5, freeDayUsedOn: null });
+  });
+
+  it('keeps a free day clean and reports which day it was', () => {
+    const data = { '2024-03-12': { slips: ['alcohol'], freeDay: true } };
+    expect(getWeekCleanSummary(data, wed())).toEqual({
+      cleanDays: 7,
+      freeDayUsedOn: '2024-03-12',
+    });
+  });
+
+  it('ignores slips from other weeks', () => {
+    const data = { '2024-03-10': { slips: ['soda'] } }; // prior Sunday
+    expect(getWeekCleanSummary(data, wed())).toEqual({ cleanDays: 7, freeDayUsedOn: null });
   });
 });
 
