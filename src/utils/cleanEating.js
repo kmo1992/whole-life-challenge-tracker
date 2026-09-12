@@ -8,12 +8,11 @@ import { getWeekStartKey } from './scheduleUtils';
 // an optional `freeDay: true`.
 
 export const SLIP_FOODS = [
-  { key: 'fried', label: 'Fried' },
   { key: 'bread', label: 'Bread' },
   { key: 'dairy', label: 'Dairy' },
-  { key: 'alcohol', label: 'Alcohol' },
+  { key: 'fried', label: 'Fried' },
   { key: 'soda', label: 'Soda' },
-  { key: 'candy', label: 'Candy' },
+  { key: 'alcohol', label: 'Alcohol' },
 ];
 
 export const slipLabel = (key) =>

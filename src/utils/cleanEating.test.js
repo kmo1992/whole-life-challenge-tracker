@@ -10,9 +10,9 @@ import {
 } from './cleanEating';
 
 describe('SLIP_FOODS', () => {
-  it('tracks the six trigger foods', () => {
+  it('tracks the five trigger foods in display order', () => {
     expect(SLIP_FOODS.map((f) => f.key)).toEqual([
-      'fried', 'bread', 'dairy', 'alcohol', 'soda', 'candy',
+      'bread', 'dairy', 'fried', 'soda', 'alcohol',
     ]);
   });
 
@@ -60,14 +60,14 @@ describe('calculateCleanStreak', () => {
   it('breaks on a day with unforgiven slips', () => {
     const asOf = moment('2024-03-15');
     const data = range(asOf, 4, clean);
-    data['2024-03-13'].slips = ['candy'];
+    data['2024-03-13'].slips = ['soda'];
     expect(calculateCleanStreak(data, asOf)).toBe(2);
   });
 
   it('forgives slips on the free day', () => {
     const asOf = moment('2024-03-15');
     const data = range(asOf, 4, clean);
-    data['2024-03-13'].slips = ['candy'];
+    data['2024-03-13'].slips = ['soda'];
     data['2024-03-13'].freeDay = true;
     expect(calculateCleanStreak(data, asOf)).toBe(4);
   });
@@ -118,11 +118,11 @@ describe('getSlipCounts', () => {
 
   it('respects the window boundary', () => {
     const data = {
-      '2024-03-15': { slips: ['candy'] },
-      '2024-01-01': { slips: ['candy'] }, // outside a 30-day window
+      '2024-03-15': { slips: ['soda'] },
+      '2024-01-01': { slips: ['soda'] }, // outside a 30-day window
     };
     const counts = getSlipCounts(data, moment('2024-03-15'), 30);
-    expect(counts).toEqual([{ key: 'candy', label: 'Candy', count: 1 }]);
+    expect(counts).toEqual([{ key: 'soda', label: 'Soda', count: 1 }]);
   });
 
   it('returns an empty list for a clean window', () => {
