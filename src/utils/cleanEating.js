@@ -11,7 +11,7 @@ export const SLIP_FOODS = [
   { key: 'bread', label: 'Bread' },
   { key: 'dairy', label: 'Dairy' },
   { key: 'fried', label: 'Fried' },
-  { key: 'soda', label: 'Soda' },
+  { key: 'sweets', label: 'Sweets' },
   { key: 'alcohol', label: 'Alcohol' },
 ];
 
