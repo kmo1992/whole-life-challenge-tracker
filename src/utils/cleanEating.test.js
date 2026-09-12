@@ -13,7 +13,7 @@ import {
 describe('SLIP_FOODS', () => {
   it('tracks the five trigger foods in display order', () => {
     expect(SLIP_FOODS.map((f) => f.key)).toEqual([
-      'bread', 'dairy', 'fried', 'sweets', 'alcohol',
+      'gluten', 'dairy', 'fried', 'sweets', 'alcohol',
     ]);
   });
 
