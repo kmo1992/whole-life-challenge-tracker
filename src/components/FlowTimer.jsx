@@ -39,6 +39,8 @@ const FlowTimer = ({ isOpen, onClose, totalReps = 0, workoutType = 'Burpees' }) 
   const { isActive, timeLeft, repTimeLeft, currentRep } = timerState;
   const [isLocked, setIsLocked] = useState(false);
   const [savedRecordingId, setSavedRecordingId] = useState(null);
+  // Get-to-your-mat lead-in: counts 5..1 after pressing play, 0 = inactive
+  const [countdown, setCountdown] = useState(0);
 
   // Camera: session recording for self-review, on-device
   const [cameraOn, setCameraOn] = useState(() => {
@@ -50,7 +52,7 @@ const FlowTimer = ({ isOpen, onClose, totalReps = 0, workoutType = 'Burpees' }) 
   });
   const videoRef = useRef(null);
   const camera = useCameraRecorder({ videoRef, enabled: isOpen && cameraOn });
-  const { stop: stopCamera, discardVideo } = camera;
+  const { start: startCamera, stop: stopCamera, discardVideo } = camera;
 
   const toggleCamera = () => {
     const next = !cameraOn;
@@ -107,10 +109,13 @@ const FlowTimer = ({ isOpen, onClose, totalReps = 0, workoutType = 'Burpees' }) 
   // 'rep': warm strike. 'half': two-note halfway marker. 'final': brighter
   // strike for the last three reps. 'done': a descending phrase that cannot
   // be mistaken for a "go" cue — no more accidental 51st burpee.
+  // 'tick': quiet blip for the get-ready countdown.
   const playChime = useCallback((variant = 'rep') => {
     try {
       if (!audioCtxRef.current) return;
-      if (variant === 'half') {
+      if (variant === 'tick') {
+        strike([[880, 0.09, 0.15]]);
+      } else if (variant === 'half') {
         strike(CHIME_WARM);
         strike(CHIME_BRIGHT, 0.3);
       } else if (variant === 'final') {
@@ -196,37 +201,68 @@ const FlowTimer = ({ isOpen, onClose, totalReps = 0, workoutType = 'Burpees' }) 
     };
   }, [isActive, totalReps, repDuration, playChime, stopCamera]);
 
-  const startSession = () => {
+  // Actually begin the session — fires when the get-ready countdown ends.
+  // The timer, the first chime, and the recording all start together.
+  const beginSession = useCallback(() => {
+    setTimerState({
+      isActive: true,
+      timeLeft: TOTAL_TIME,
+      repTimeLeft: repDuration,
+      currentRep: 1,
+      totalElapsed: 0
+    });
+    startTimeRef.current = 0;
+    prevRepRef.current = 1;
     setSavedRecordingId(null);
-    if (cameraOn) camera.start();
-  };
+    if (cameraOn) startCamera();
+    playChime('rep');
+    if (navigator.vibrate) navigator.vibrate(60);
+  }, [TOTAL_TIME, repDuration, cameraOn, startCamera, playChime]);
+
+  // Five-second lead-in: a quiet tick each second, then the session begins
+  useEffect(() => {
+    if (countdown <= 0) return undefined;
+    playChime('tick');
+    const id = setTimeout(() => {
+      if (countdown === 1) {
+        setCountdown(0);
+        beginSession();
+      } else {
+        setCountdown(countdown - 1);
+      }
+    }, 1000);
+    return () => clearTimeout(id);
+  }, [countdown, playChime, beginSession]);
 
   const toggleTimer = () => {
     if (totalReps <= 0) return;
 
+    // During the lead-in the button cancels back to the start screen
+    if (countdown > 0) {
+      setCountdown(0);
+      return;
+    }
+
     if (timerState.timeLeft <= 0) {
+      // Restart after a finish: clear the summary, then count down again
       initAudio();
       setTimerState({
-        isActive: true,
+        isActive: false,
         timeLeft: TOTAL_TIME,
         repTimeLeft: repDuration,
         currentRep: 1,
         totalElapsed: 0
       });
-      startTimeRef.current = 0;
-      prevRepRef.current = 1;
-      startSession();
-      playChime('rep');
+      setCountdown(5);
       return;
     }
 
     if (!isActive) {
       initAudio();
-      setTimerState(prev => ({ ...prev, isActive: true }));
       if (timerState.timeLeft === TOTAL_TIME) {
-        startSession();
-        playChime('rep');
-        prevRepRef.current = timerState.currentRep;
+        setCountdown(5); // fresh start → get to your mat
+      } else {
+        setTimerState(prev => ({ ...prev, isActive: true })); // resume from pause
       }
     } else {
       setTimerState(prev => ({ ...prev, isActive: false }));
@@ -244,6 +280,7 @@ const FlowTimer = ({ isOpen, onClose, totalReps = 0, workoutType = 'Burpees' }) 
     startTimeRef.current = 0;
     prevRepRef.current = 1;
     setSavedRecordingId(null);
+    setCountdown(0);
     stopCamera();
     discardVideo();
   }, [TOTAL_TIME, repDuration, stopCamera, discardVideo]);
@@ -308,7 +345,8 @@ const FlowTimer = ({ isOpen, onClose, totalReps = 0, workoutType = 'Burpees' }) 
   if (!isOpen) return null;
 
   const finished = timeLeft <= 0;
-  const preStart = !isActive && !finished && timeLeft === TOTAL_TIME;
+  const countingDown = countdown > 0;
+  const preStart = !isActive && !finished && !countingDown && timeLeft === TOTAL_TIME;
 
   // Bell-strike pulse: blooms instantly at each chime, then decays through
   // the interval — the jump IS the "new burpee" signal.
@@ -375,7 +413,9 @@ const FlowTimer = ({ isOpen, onClose, totalReps = 0, workoutType = 'Burpees' }) 
               <div className="end-timer-message">Well done.</div>
               {cameraOn && camera.videoUrl && (
                 <div className="video-review">
-                  <video className="video-mirror" src={camera.videoUrl} controls playsInline />
+                  {/* Playback stays un-mirrored: flipping a <video> also flips
+                      its native controls (they render inside the element) */}
+                  <video src={camera.videoUrl} controls playsInline />
                   <p className="review-caption">
                     {savedRecordingId ? 'Saved to recordings ✓' : 'Saving…'}
                   </p>
@@ -393,6 +433,11 @@ const FlowTimer = ({ isOpen, onClose, totalReps = 0, workoutType = 'Burpees' }) 
                   </div>
                 </div>
               )}
+            </>
+          ) : countingDown ? (
+            <>
+              <div className="countdown-number">{countdown}</div>
+              <p className="flow-hint">Get to your mat.</p>
             </>
           ) : (
             <>
@@ -427,8 +472,13 @@ const FlowTimer = ({ isOpen, onClose, totalReps = 0, workoutType = 'Burpees' }) 
             <button className="icon-btn reset" onClick={resetTimer} disabled={isLocked} aria-label="Reset">
               <IconReset />
             </button>
-            <button className="icon-btn play" onClick={toggleTimer} disabled={isLocked} aria-label={isActive ? "Pause" : "Start"}>
-              {isActive ? <IconPause /> : <IconPlay />}
+            <button
+              className="icon-btn play"
+              onClick={toggleTimer}
+              disabled={isLocked}
+              aria-label={isActive ? 'Pause' : countingDown ? 'Cancel' : 'Start'}
+            >
+              {isActive || countingDown ? <IconPause /> : <IconPlay />}
             </button>
           </div>
         </div>
