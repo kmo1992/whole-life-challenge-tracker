@@ -8,7 +8,8 @@ A personal health and habit tracker built with React, shaped around the [Busy Da
 - **Morning Numbers**: Each day proposes your numbers (burpees or navy seals, pull-ups) from your weekly goals — review, adjust one-offs, and accept them.
 - **Flow Timer**: A numbers-free 20-minute workout timer. A bell-strike pulse blooms once per rep with a warm chime (plus haptics) — no counters, no clocks, no overthinking. Audio-only milestones mark the halfway rep and the final three, and a distinct descending phrase signals the finish.
 - **Session Recording** (optional): record your workout for self-review with a mirrored live preview. Recordings auto-save to on-device storage with a list to replay, download, or delete — video never leaves the device. Works with phone cameras or webcams, with a device picker.
-- **Daily Tracking**: Habit checkboxes (workout, stretch, read + coffee), pull-ups with actual rep counts, and a hydration tally.
+- **Daily Tracking**: Habit checkboxes (workout, stretch, read + coffee), pull-ups with actual rep counts, and a hydration tally — organized time-neutrally, so the practice fits any hour of the day.
+- **Clean Eating**: tracked by exception — every day starts clean and costs zero taps; slips get logged against six trigger foods (Fried, Bread, Dairy, Alcohol, Soda, Candy). One free day per week forgives its slips. A separate clean streak sits beside the practice streak, and Trends shows a 30-day slip tally per food.
 - **Weekly Goals**: Set targets for burpees, navy seals, and pull-ups each week, with carry-over when a week isn't explicitly set.
 - **Trends**: Current/longest streak, 30-day completion, a 12-week consistency heatmap, and pull-up progression.
 - **Tomorrow Preview**: A collapsed peek at tomorrow's workout and stretch routine for planning around real life.
@@ -96,7 +97,7 @@ npm run test:watch # watch mode
 npm run lint       # eslint
 ```
 
-The suite covers the pure logic: workout scheduling and goal carry-over, streak calculation, and trends/statistics.
+The suite covers the pure logic: workout scheduling and goal carry-over, streak calculation, clean-eating rules (slips, free day, clean streak), and trends/statistics.
 
 ### Production Build
 
@@ -140,9 +141,10 @@ src/
 │   ├── DayNavigation.jsx      # Date picker with prev/next
 │   ├── StreakDisplay.jsx      # Streak counter
 │   ├── MorningTargets.jsx     # Accept/adjust today's numbers
-│   ├── MorningRitual.jsx      # Morning routine section
+│   ├── MorningRitual.jsx      # Practice section (habit rows)
 │   ├── PullupsRow.jsx         # Pull-ups with rep stepper
-│   ├── EndOfDay.jsx           # Hydration section
+│   ├── EndOfDay.jsx           # Fuel section (hydration + clean eating)
+│   ├── CleanEatingRow.jsx     # Slip logging + weekly free day
 │   ├── HabitRow.jsx           # Reusable checkbox row
 │   ├── HydrationRow.jsx       # 3-bottle water tracker
 │   ├── icons.jsx              # Shared inline SVG icons
@@ -164,6 +166,7 @@ src/
     ├── dateUtils.js           # Date helpers, debug override
     ├── scheduleUtils.js       # Workout schedule, goal resolution
     ├── streakUtils.js         # Streak calculation
+    ├── cleanEating.js         # Slip foods, clean streak, free-day logic
     ├── statsUtils.js          # Trends/heatmap statistics
     └── recordingsStore.js     # On-device video storage (IndexedDB)
 ```

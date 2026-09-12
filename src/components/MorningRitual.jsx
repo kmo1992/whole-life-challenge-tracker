@@ -23,7 +23,9 @@ function MorningRitual({ habits, isoWeekday, workoutSchedule, onToggleHabit, dis
 
   return (
     <section className="section">
-      <h2 className="section-header">Morning Routine</h2>
+      {/* Time-neutral on purpose: the practice happens whenever it fits —
+          pull-ups at dawn, burpees at dusk, any pattern that works */}
+      <h2 className="section-header">Practice</h2>
 
       {/* Workout — hidden on Sunday */}
       {!sunday && (

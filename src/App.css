@@ -938,6 +938,106 @@ body {
   text-decoration: underline;
 }
 
+/* ---- Clean Eating ---- */
+
+.streak-clean {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--done-green);
+  margin-left: 4px;
+}
+
+.clean-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 4px 12px 38px;
+  border-bottom: 1px solid var(--rule-line);
+}
+
+.slip-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.slip-chip {
+  background: var(--parchment-dark);
+  border: 1px solid var(--rule-line);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-light);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.slip-chip--on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--parchment);
+}
+
+.free-day-btn {
+  align-self: flex-start;
+  background: none;
+  border: 1px dashed var(--leather);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--leather);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.free-day-btn--on {
+  background: var(--gold-reward);
+  border: 1px solid var(--gold-reward);
+  color: var(--parchment);
+}
+
+.free-day-note {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--rest-gray);
+}
+
+/* Slip tallies in Trends */
+.slip-counts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 320px;
+}
+
+.slip-count-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.slip-count-label {
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  color: var(--ink-light);
+  min-width: 64px;
+}
+
+.slip-count-bar {
+  height: 10px;
+  border-radius: 5px;
+  background: var(--leather);
+}
+
+.slip-count-value {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink);
+}
+
 /* ---- Trends View ---- */
 
 .trends-header {
