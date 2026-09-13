@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import moment from 'moment';
 import {
   SLIP_FOODS,
-  slipLabel,
+  slipLabels,
   isDayClean,
   calculateCleanStreak,
   getWeekFreeDay,
@@ -13,13 +13,17 @@ import {
 describe('SLIP_FOODS', () => {
   it('tracks the five trigger foods in display order', () => {
     expect(SLIP_FOODS.map((f) => f.key)).toEqual([
-      'bread', 'dairy', 'fried', 'sweets', 'alcohol',
+      'gluten', 'dairy', 'fried', 'sweets', 'alcohol',
     ]);
   });
 
-  it('maps keys to labels, falling back to the key', () => {
-    expect(slipLabel('alcohol')).toBe('Alcohol');
-    expect(slipLabel('mystery')).toBe('mystery');
+  it('renders slip labels in list order regardless of tap order', () => {
+    expect(slipLabels(['alcohol', 'gluten', 'fried'])).toEqual(['Gluten', 'Fried', 'Alcohol']);
+  });
+
+  it('drops unknown slip keys from labels', () => {
+    expect(slipLabels(['mystery', 'dairy'])).toEqual(['Dairy']);
+    expect(slipLabels()).toEqual([]);
   });
 });
 
