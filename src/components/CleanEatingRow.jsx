@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CheckIcon } from './icons';
-import { SLIP_FOODS, slipLabel } from '../utils/cleanEating';
+import { SLIP_FOODS, slipLabels } from '../utils/cleanEating';
 
 // Clean eating by exception: the day starts clean and costs zero taps.
 // Slips are logged against the trigger foods; one free day per week
@@ -12,11 +12,10 @@ function CleanEatingRow({ slips, freeDay, weekFreeDayUsedOn, isToday, disabled, 
 
   const clean = freeDay || slips.length === 0;
 
+  const slipText = slipLabels(slips).join(', ');
   const label = freeDay
-    ? `Free day${slips.length > 0 ? ` — ${slips.map(slipLabel).join(', ')}` : ''}`
-    : slips.length > 0
-      ? slips.map(slipLabel).join(', ')
-      : 'Clean eating';
+    ? `Free day${slipText ? ` — ${slipText}` : ''}`
+    : slipText || 'Clean eating';
 
   const toggleSlip = (key) => {
     onSetSlips(

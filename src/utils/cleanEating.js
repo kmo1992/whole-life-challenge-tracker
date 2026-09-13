@@ -15,8 +15,10 @@ export const SLIP_FOODS = [
   { key: 'alcohol', label: 'Alcohol' },
 ];
 
-export const slipLabel = (key) =>
-  SLIP_FOODS.find((f) => f.key === key)?.label || key;
+// Labels for a day's slips, always in SLIP_FOODS order — matching the chip
+// row regardless of the order they were tapped in
+export const slipLabels = (slips = []) =>
+  SLIP_FOODS.filter((f) => slips.includes(f.key)).map((f) => f.label);
 
 // A day is clean when nothing was logged against it, or its free day covers it
 export const isDayClean = (dayData) =>
